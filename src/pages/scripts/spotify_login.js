@@ -43,7 +43,6 @@ export default function SpotifyLogin(){
         // Request User Authorization
         const clientId = '5015dd89db744095996b70ff3fdf46f9';
         const redirectUri = 'http://localhost:3000';
-        
         let codeVerifier = generateRandomString(128);
         
         generateCodeChallenge(codeVerifier).then(codeChallenge => {
@@ -62,7 +61,7 @@ export default function SpotifyLogin(){
                 code_challenge: codeChallenge
             });
             
-            window.location = 'https://accounts.spotify.com/authorize?' + args;
+            window.location.replace('https://accounts.spotify.com/authorize?' + args);
         });
 
         const urlParams = new URLSearchParams(window.location.search);
