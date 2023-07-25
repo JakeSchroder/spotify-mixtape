@@ -9,6 +9,7 @@ export default function Home() {
     RequestAccessToken()
     getProfile(localStorage.getItem('access_token'))
   })
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <button className='btn-primary' onClick={SpotifyLogin}>Spotify Login</button>

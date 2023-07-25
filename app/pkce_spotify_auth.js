@@ -26,7 +26,9 @@ async function generateCodeChallenge(codeVerifier) {
 }
 
 const clientId = '5015dd89db744095996b70ff3fdf46f9';
-const redirectUri = 'http://localhost:3000';
+const redirectUri = 'http://'+window.location.host;
+console.log(redirectUri)
+//const redirectUri = 'http://localhost:3000';
 
 export default function SpotifyLogin(){
         // Request User Authorization
