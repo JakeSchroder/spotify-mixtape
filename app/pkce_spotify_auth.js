@@ -1,3 +1,4 @@
+'use client'
 // Code Verifier
 function generateRandomString(length) {
     let text = '';
@@ -24,11 +25,13 @@ async function generateCodeChallenge(codeVerifier) {
     
     return base64encode(digest);
 }
-
-const clientId = '5015dd89db744095996b70ff3fdf46f9';
-const redirectUri = 'http://'+window.location.host;
-console.log(redirectUri)
+let clientId = '';
+let redirectUri = '';
+if (typeof window !== "undefined") {
+    clientId = '5015dd89db744095996b70ff3fdf46f9';
+    redirectUri = 'http://'+window.location.host;
 //const redirectUri = 'http://localhost:3000';
+}
 
 export default function SpotifyLogin(){
         // Request User Authorization
