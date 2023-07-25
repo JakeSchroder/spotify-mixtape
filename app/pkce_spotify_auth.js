@@ -29,7 +29,12 @@ let clientId = '';
 let redirectUri = '';
 if (typeof window !== "undefined") {
     clientId = '5015dd89db744095996b70ff3fdf46f9';
-    redirectUri = 'http://'+window.location.host;
+    if(location.protocol !== 'https:'){
+        redirectUri = 'http://'+window.location.host;
+    }
+    else{
+        redirectUri = 'https://'+window.location.host;
+    }
 //const redirectUri = 'http://localhost:3000';
 }
 
