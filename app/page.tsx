@@ -1,7 +1,7 @@
-import NavBar from "./navbar";
-import Footer from "./footer";
-import LoginBody from "./login_body";
-import MixtapeBody from "./mixtape_body";
+import NavBar from "./_components/navbar";
+import Footer from "./_components/footer";
+import LoginBody from "./_components/login_body";
+import MixtapeBody from "./_components/mixtape_body";
 export default function Home() {
 
 
