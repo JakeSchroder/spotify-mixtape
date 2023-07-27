@@ -9,9 +9,10 @@ module.exports = {
     colors: {
       text: '#000000',
       background: '#fcf8fb',
-      'primary-button': '#847C44',
-      'secondary-button': '#c2c2c2',
-      accent: '#e7d982',
+      primary_button: '#2A3232',
+      secondary_button: '#F8F5F6',
+      spotify_accent: '#82c23c',
+      menu_text: '#BEB6A7'
     },
     extend: {
       backgroundImage: {

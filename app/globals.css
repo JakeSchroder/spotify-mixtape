@@ -3,17 +3,31 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
-}
+  --foreground-rgb: 248, 245, 246;
+  --background-start-rgb: 52, 77, 38;
+  --background-end-rgb: 27, 36, 36;}
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgb(var(--background-end-rgb))
+  )
+  rgb(var(--background-start-rgb));
 }
 
 @layer components {
-  .btn-primary {
-    @apply py-2 px-4 bg-primary-button font-semibold rounded-lg shadow-md hover:bg-accent focus:outline-none focus:ring-2 focus:bg-accent focus:ring-opacity-75;
+  .btn-spotify {
+    @apply py-2 px-4 bg-spotify_accent font-semibold rounded-lg shadow-md text-text ;
+  }
+  .btn-nav {
+    @apply hover:text-menu_text focus:text-spotify_accent
+  }
+  .btn-filter{
+    @apply py-2 px-4 rounded-full bg-primary_button hover:bg-secondary_button hover:text-text
+  }
+  .btn-secondary{
+    @apply py-2 px-4 bg-primary_button rounded-lg shadow-lg
   }
 }
