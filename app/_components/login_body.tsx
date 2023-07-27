@@ -2,7 +2,6 @@
 import SpotifyLogin from "./pkce_spotify_auth"
 import { getProfile, RequestAccessToken } from "./pkce_spotify_auth";
 import { useEffect } from "react";
-
 export default function LoginBody(){
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);

@@ -19,12 +19,15 @@ body {
 
 @layer components {
   .btn-spotify {
-    @apply py-2 px-4 bg-spotify_accent font-semibold rounded-lg shadow-md text-text hover:opacity-80;
+    @apply py-2 px-4 bg-spotify_accent font-semibold rounded-lg shadow-md text-text hover:opacity-80 select-none;
   }
   .btn-nav {
-    @apply hover:opacity-80 focus:text-spotify_accent
+    @apply hover:opacity-80 focus:text-spotify_accent select-none
   }
-  .btn-filter{
-    @apply py-2 px-4 rounded-full bg-primary_button hover:bg-secondary_button hover:text-text focus:bg-secondary_button focus:text-text 
+  .btn-filter-unchecked{
+    @apply py-2 px-4 rounded-full bg-primary_button hover:bg-secondary_button hover:text-text select-none
+  }
+  .btn-filter-checked{
+    @apply py-2 px-4 rounded-full bg-secondary_button text-text hover:bg-secondary_button hover:text-text select-none
   }
 }
