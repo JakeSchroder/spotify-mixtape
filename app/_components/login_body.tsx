@@ -11,8 +11,8 @@ export default function LoginBody(){
         getProfile(localStorage.getItem('access_token'))
       })
     return(
-        <div className="flex min-h-[80vh] flex-col items-center  p-24 space-y-12">
-            <h1 className=" text-4xl">Find Your Mixtape</h1>
+        <div className="flex min-h-screen flex-col items-center p-16 space-y-12">
+            <h1 className=" text-4xl ">Find Your Mixtape</h1>
             <button className='btn-spotify' onClick={SpotifyLogin}>Spotify Login</button>
         </div>
     )
