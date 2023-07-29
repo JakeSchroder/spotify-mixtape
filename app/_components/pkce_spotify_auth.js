@@ -30,12 +30,11 @@ let redirectUri = '';
 if (typeof window !== "undefined") {
     clientId = '5015dd89db744095996b70ff3fdf46f9';
     if(location.protocol !== 'https:'){
-        redirectUri = 'http://'+window.location.host;
+        redirectUri = 'http://'+window.location.host+'/mixtape';
     }
     else{
-        redirectUri = 'https://'+window.location.host;
+        redirectUri = 'https://'+window.location.host+'/mixtape';
     }
-//const redirectUri = 'http://localhost:3000';
 }
 
 export default function SpotifyLogin(){
