@@ -30,12 +30,11 @@ let redirectUri = '';
 if (typeof window !== "undefined") {
     clientId = '5015dd89db744095996b70ff3fdf46f9';
     if(location.protocol !== 'https:'){
-        redirectUri = 'http://'+window.location.host;
+        redirectUri = 'http://'+window.location.host+'/mixtape';
     }
     else{
-        redirectUri = 'https://'+window.location.host;
+        redirectUri = 'https://'+window.location.host+'/mixtape';
     }
-//const redirectUri = 'http://localhost:3000';
 }
 
 export default function SpotifyLogin(){
@@ -96,18 +95,4 @@ export function RequestAccessToken(){
         .catch(error => {
             console.error('Error:', error);
         });
-}
-
-// Fetches data about user after getting authorized
-export async function getProfile(accessToken) {
-    accessToken = localStorage.getItem('access_token');
-    
-    const response = await fetch('https://api.spotify.com/v1/me', {
-        headers: {
-        Authorization: 'Bearer ' + accessToken
-        }
-    });
-    
-    const data = await response.json();
-    console.log(data)
 }

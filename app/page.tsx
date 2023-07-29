@@ -1,18 +1,18 @@
 'use client'
-import SpotifyLogin from "./pkce_spotify_auth"
-import { getProfile, RequestAccessToken } from "./pkce_spotify_auth";
-import { useEffect } from "react";
-export default function Home() {
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    let code = urlParams.get('code');
-    RequestAccessToken()
-    getProfile(localStorage.getItem('access_token'))
-  })
+import NavBar from "./_components/navbar";
+import Footer from "./_components/footer";
+import LoginBody from "./_components/login_body";
 
+export default function Home() {
+  //console.log(localStorage.getItem('access_token'))
+  // check if access token is valid/available by making request
+  // if it is then load mixtape body(200 res)
+  // else load login body(400 res)
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <button className='btn-primary' onClick={SpotifyLogin}>Spotify Login</button>
-    </main>
+    <>
+      <NavBar/>
+      <LoginBody/>
+      <Footer/>
+    </>
   )
 }

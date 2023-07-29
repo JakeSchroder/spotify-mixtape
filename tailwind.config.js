@@ -9,9 +9,10 @@ module.exports = {
     colors: {
       text: '#000000',
       background: '#fcf8fb',
-      'primary-button': '#847C44',
-      'secondary-button': '#c2c2c2',
-      accent: '#e7d982',
+      primary_button: '#2A3232',
+      secondary_button: '#F8F5F6',
+      spotify_accent: '#82c23c',
+      menu_text: '#BEB6A7'
     },
     extend: {
       backgroundImage: {
@@ -20,7 +21,7 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       fontFamily: {
-        sans: ['var(--font-montserrat-alt)'],
+        sans: ['var(--font-poppins)'],
       },
       fontSize: {
         sm: '0.8rem',
