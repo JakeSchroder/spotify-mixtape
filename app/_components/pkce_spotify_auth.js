@@ -97,17 +97,3 @@ export function RequestAccessToken(){
             console.error('Error:', error);
         });
 }
-
-// Fetches data about user after getting authorized
-export async function getProfile(accessToken) {
-    accessToken = localStorage.getItem('access_token');
-    
-    const response = await fetch('https://api.spotify.com/v1/me', {
-        headers: {
-        Authorization: 'Bearer ' + accessToken
-        }
-    });
-    
-    const data = await response.json();
-    console.log(data)
-}
