@@ -1,6 +1,7 @@
 'use client'
 import SpotifyLogin from "./pkce_spotify_auth"
-import { getProfile, RequestAccessToken } from "./pkce_spotify_auth";
+import { RequestAccessToken } from "./pkce_spotify_auth";
+import {getProfile} from "./get_mixtape";
 import { useEffect } from "react";
 export default function LoginBody(){
     useEffect(() => {
@@ -11,7 +12,7 @@ export default function LoginBody(){
       })
     return(
         <div className="flex min-h-screen flex-col items-center p-16 space-y-12">
-            <h1 className=" text-4xl ">Find Your Mixtape</h1>
+            <h1 className=" text-4xl text-center">Find Your Mixtape</h1>
             <button className='btn-spotify' onClick={SpotifyLogin}>Spotify Login</button>
         </div>
     )

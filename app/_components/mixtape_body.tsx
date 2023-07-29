@@ -16,7 +16,7 @@ export default function MixtapeBody(){
             >
             {({ values }) => (
                 <Form className=" flex flex-col items-center space-y-4 p-6 ">
-                    <h1 className=" text-4xl ">Your Most Niche</h1>
+                    <h1 className=" text-4xl text-center">Your Most Niche</h1>
                     <div className=" flex flex-row space-x-2" role='group'>
                         <label className={values.category === 'tracks' ? 'btn-filter-checked':'btn-filter-unchecked'}>
                             <Field className='appearance-none' type='radio' value='tracks' name='category'/>
@@ -27,9 +27,9 @@ export default function MixtapeBody(){
                             Artists
                         </label>
                     </div>
-                    <h1 className=" text-4xl ">Within the Last</h1>
+                    <h1 className=" text-4xl text-center">Within the Last</h1>
 
-                    <div className=" flex flex-row space-x-2" role='group'>
+                    <div className=" grid grid-flow-col grid-rows-1 gap-4 sm:grid-rows-2 sm:flex-row" role='group'>
                         <label className={values.time_frame === 'month' ? 'btn-filter-checked':'btn-filter-unchecked'} >
                             <Field className='appearance-none' type='radio' value='month' name='time_frame'/>
                             Month
@@ -51,9 +51,9 @@ export default function MixtapeBody(){
                 </Form>
             )}
             </Formik>
-            <h1>Nichify content</h1>
-            <button className=" btn-spotify">Download Image</button>
+            <h1>Nichify content</h1>    
             <button className=" btn-spotify">Share</button>
+            <button className=" btn-spotify">Download Image</button>
             <button className=" btn-spotify">Log Out</button>
         </div>
     )
