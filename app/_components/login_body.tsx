@@ -1,7 +1,7 @@
 'use client'
-import SpotifyLogin from "./pkce_spotify_auth"
-import { RequestAccessToken } from "./pkce_spotify_auth";
-import {getProfile} from "./get_mixtape";
+import SpotifyLogin from "../_lib/pkce_spotify_auth"
+import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
+import {getProfile} from "../_lib/get_mixtape";
 import { useEffect, useState } from "react";
 export default function LoginBody(){
     const [shouldRunEffect, setShouldRunEffect] = useState(false);
