@@ -54,7 +54,7 @@ async function getTrackInfo(track){
         track_popularity: track['track']['popularity'],
         added_at: track['added_at'],
         added_by: track['added_by'],
-        lartist_popularity: data['followers']['total'],
+        artist_popularity: data['followers']['total'],
     }
     return track_info
 }

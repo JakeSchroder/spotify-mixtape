@@ -1,7 +1,14 @@
 import { Formik, Field, Form } from 'formik';
+import { useEffect } from 'react';
+import { getProfile } from '../_lib/get_mixtape';
+import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 
 export default function MixtapeBody(){
     // UseEffect calls api every time 'values' changes
+    useEffect(()=>{
+        RequestAccessToken()
+        getProfile(localStorage.getItem('access_token'))
+    })
     return(
         <div className=" flex flex-col items-center space-y-4 p-6 min-h-screen">
             <Formik       

@@ -1,4 +1,7 @@
 'use client'
+let clientId = '';
+let redirectUri = '';
+
 // Code Verifier
 function generateRandomString(length) {
     let text = '';
@@ -25,8 +28,7 @@ async function generateCodeChallenge(codeVerifier) {
     
     return base64encode(digest);
 }
-let clientId = '';
-let redirectUri = '';
+
 if (typeof window !== "undefined") {
     clientId = '5015dd89db744095996b70ff3fdf46f9';
     if(location.protocol !== 'https:'){
