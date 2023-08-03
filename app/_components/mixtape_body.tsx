@@ -77,7 +77,7 @@ export default function MixtapeBody(){
                         </label>
                     </div>
                     {(values.time_frame =='month') &&
-                        mixtapeOneMonth.map((track:TrackProvider,index:number)=>{
+                        mixtapeOneMonth?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
@@ -87,7 +87,7 @@ export default function MixtapeBody(){
                         })
                     }
                     {(values.time_frame =='6months') &&
-                        mixtapeSixMonths.map((track:TrackProvider,index:number)=>{
+                        mixtapeSixMonths?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
@@ -97,7 +97,7 @@ export default function MixtapeBody(){
                         })
                     }
                     {(values.time_frame =='year') &&
-                        mixtapeOneYear.map((track:TrackProvider,index:number)=>{
+                        mixtapeOneYear?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
@@ -107,7 +107,7 @@ export default function MixtapeBody(){
                         })
                     }
                     {(values.time_frame =='all_time') &&
-                        mixtapeAllTime.map((track:TrackProvider,index:number)=>{
+                        mixtapeAllTime?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
