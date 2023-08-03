@@ -6,22 +6,23 @@ import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 
 export default function MixtapeBody(){
     const [hasMounted, setHasMounted] = useState(false);
-    let mixtapeOneMonth:Array<any> = [];
-    let mixtapeSixMonths:Array<any> = [];
-    let mixtapeOneYear:Array<any> = [];
-    let mixtapeAllTime:Array<any> = [];
+    let mixtapeOneMonth:Array<any>= JSON.parse('[{}]');
+    let mixtapeSixMonths:Array<any> = JSON.parse('[{}]');
+    let mixtapeOneYear:Array<any> = JSON.parse('[{}]');
+    let mixtapeAllTime:Array<any> = JSON.parse('[{}]');
 
     // UseEffect calls api every time 'values' changes
     useEffect(()=>{
         RequestAccessToken();
         getUserPlaylists();
         setHasMounted(true);
+
     })
     if (hasMounted == true){
-        mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth') || '{}');
-        mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths') || '{}');
-        mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear') || '{}');
-        mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime') || '{}');
+        mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth') || JSON.parse('[{}]'));
+        mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths') || JSON.parse('[{}]'));
+        mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear') || JSON.parse('[{}]'));
+        mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime') || JSON.parse('[{}]'));
     }
 
     interface TrackProvider {
