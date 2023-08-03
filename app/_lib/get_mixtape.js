@@ -1,7 +1,5 @@
 'use client'
 
-import { create } from "domain";
-
 // Fetches data about user after getting authorized
 export async function getUserPlaylists() {
     let accessToken = localStorage.getItem('access_token');
@@ -21,7 +19,7 @@ async function getPlaylistItems(playlists){
     let accessToken = localStorage.getItem('access_token');
     let playlist_track_info = [];
 
-    for (let i=0; i<Object.keys(playlists).length; i++){
+    for (let i=0; i<Object.keys(playlists['items']).length; i++){
         playlist_tracks.push(playlists['items'][i]['tracks']['href'])
     }
 

@@ -10,12 +10,15 @@ export default function MixtapeBody(){
         RequestAccessToken();
         getUserPlaylists();
     })
-    let mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth'));
-    let mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths'));
-    let mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear'));
-    let mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime'));
-
-
+    let mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth') || '{}');
+    let mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths') || '{}');
+    let mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear') || '{}');
+    let mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime') || '{}');
+    interface TrackProvider {
+        name:string,
+        artist:string
+    }
+        
     return(
         <div className=" flex flex-col items-center space-y-4 p-6 min-h-screen">
             <Formik       
@@ -62,37 +65,37 @@ export default function MixtapeBody(){
                         </label>
                     </div>
                     {(values.time_frame =='month') &&
-                        mixtapeOneMonth.map((track:Object,index:number)=>{
+                        mixtapeOneMonth.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
                                 </div>
                             )
                         })
                     }
                     {(values.time_frame =='6months') &&
-                        mixtapeSixMonths.map((track:Object,index:number)=>{
+                        mixtapeSixMonths.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
                                 </div>
                             )
                         })
                     }
                     {(values.time_frame =='year') &&
-                        mixtapeOneYear.map((track:Object,index:number)=>{
+                        mixtapeOneYear.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
                                 </div>
                             )
                         })
                     }
                     {(values.time_frame =='all_time') &&
-                        mixtapeAllTime.map((track:Object,index:number)=>{
+                        mixtapeAllTime.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
                                 </div>
                             )
                         })
@@ -100,8 +103,6 @@ export default function MixtapeBody(){
                 </Form>
             )}
             </Formik>
-
-            <h1>Nichify content</h1>    
             <button className=" btn-spotify">Share</button>
             <button className=" btn-spotify">Download Image</button>
             <button className=" btn-spotify">Log Out</button>
