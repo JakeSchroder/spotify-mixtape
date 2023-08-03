@@ -1,22 +1,33 @@
 'use client'
 import { Formik, Field, Form } from 'formik';
-import { useEffect } from 'react';
+import { useEffect, useState} from 'react';
 import { getUserPlaylists } from '../_lib/get_mixtape';
 import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 
 export default function MixtapeBody(){
+    const [hasMounted, setHasMounted] = useState(false);
+    let mixtapeOneMonth:Array<any> = [];
+    let mixtapeSixMonths:Array<any> = [];
+    let mixtapeOneYear:Array<any> = [];
+    let mixtapeAllTime:Array<any> = [];
+
     // UseEffect calls api every time 'values' changes
     useEffect(()=>{
         RequestAccessToken();
         getUserPlaylists();
+        setHasMounted(true);
     })
-    let mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth') || '{}');
-    let mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths') || '{}');
-    let mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear') || '{}');
-    let mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime') || '{}');
+    if (hasMounted == true){
+        mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth') || '{}');
+        mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths') || '{}');
+        mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear') || '{}');
+        mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime') || '{}');
+    }
+
     interface TrackProvider {
         name:string,
-        artist:string
+        artist:string,
+        artist_popularity: string
     }
         
     return(
@@ -69,6 +80,7 @@ export default function MixtapeBody(){
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
+                                    <h1>| {track.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
@@ -78,6 +90,7 @@ export default function MixtapeBody(){
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
+                                    <h1>| {track.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
@@ -87,6 +100,7 @@ export default function MixtapeBody(){
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
+                                    <h1>|   {track.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
@@ -96,6 +110,7 @@ export default function MixtapeBody(){
                             return(
                                 <div className='flex gap-2' key={index}>
                                     {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
+                                    <h1>| {track.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
