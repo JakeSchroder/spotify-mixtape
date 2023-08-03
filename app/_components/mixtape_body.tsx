@@ -80,8 +80,8 @@ export default function MixtapeBody(){
                         mixtapeOneMonth?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
-                                    <h1>| {track.artist_popularity} followers</h1>
+                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
+                                    <h1>| {track?.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
@@ -90,8 +90,8 @@ export default function MixtapeBody(){
                         mixtapeSixMonths?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
-                                    <h1>| {track.artist_popularity} followers</h1>
+                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
+                                    <h1>| {track?.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
@@ -100,8 +100,8 @@ export default function MixtapeBody(){
                         mixtapeOneYear?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
-                                    <h1>|   {track.artist_popularity} followers</h1>
+                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
+                                    <h1>|   {track?.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
@@ -110,8 +110,8 @@ export default function MixtapeBody(){
                         mixtapeAllTime?.map((track:TrackProvider,index:number)=>{
                             return(
                                 <div className='flex gap-2' key={index}>
-                                    {values.category =='tracks'? <h1>{track.name} - {track.artist}</h1>:<h1>{track.artist}</h1>}
-                                    <h1>| {track.artist_popularity} followers</h1>
+                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
+                                    <h1>| {track?.artist_popularity} followers</h1>
                                 </div>
                             )
                         })
