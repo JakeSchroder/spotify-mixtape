@@ -1,7 +1,10 @@
 'use client'
+
+import { create } from "domain";
+
 // Fetches data about user after getting authorized
-export async function getProfile(accessToken) {
-    accessToken = localStorage.getItem('access_token');
+export async function getUserPlaylists() {
+    let accessToken = localStorage.getItem('access_token');
     
     const response = await fetch('https://api.spotify.com/v1/me/playlists?limit=50&offset=0', {
         headers: {
@@ -10,10 +13,10 @@ export async function getProfile(accessToken) {
     });
     
     const data = await response.json()
-    getTrackList(data)
+    getPlaylistItems(data);
 }
 
-async function getTrackList(playlists){
+async function getPlaylistItems(playlists){
     let playlist_tracks = [];
     let accessToken = localStorage.getItem('access_token');
     let playlist_track_info = [];
@@ -30,16 +33,51 @@ async function getTrackList(playlists){
         });
         const data = await response.json()
         for (let i=0; i<Object.keys(data['items']).length; i++){
-            playlist_track_info.push(await getTrackInfo(data['items'][i]))
+            playlist_track_info.push(await queueTrackObject(data['items'][i]))
         }
-
     }
 
-
-    console.log(playlist_track_info)
+    createMixtape(playlist_track_info)
 }
 
-async function getTrackInfo(track){
+async function createMixtape(playlist_track_info){
+    const currentDate = new Date();
+    const oneMonthAgo = new Date(currentDate);
+    oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+    const sixMonthsAgo = new Date(currentDate);
+    sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+    const oneYearAgo = new Date(currentDate);
+    oneYearAgo.setMonth(currentDate.getMonth() - 12);
+
+    playlist_track_info.sort((a, b)=> a.track_popularity - b.track_popularity)
+    let mixtapeOneMonth = playlist_track_info.filter((a)=> {
+        const givenDate = new Date(a.added_at);
+        if (givenDate > oneMonthAgo) {
+            return true;
+        }
+    })
+    localStorage.setItem('mixtapeOneMonth', JSON.stringify(mixtapeOneMonth.slice(0,10)));
+
+    let mixtapeSixMonths = playlist_track_info.filter((a)=> {
+        const givenDate = new Date(a.added_at);
+        if (givenDate > sixMonthsAgo) {
+            return true;
+        }
+    })
+    localStorage.setItem('mixtapeSixMonths', JSON.stringify(mixtapeSixMonths.slice(0,10)));
+    let mixtapeOneYear = playlist_track_info.filter((a)=> {
+        const givenDate = new Date(a.added_at);
+        if (givenDate > oneYearAgo) {
+            return true;
+        }
+    })
+    localStorage.setItem('mixtapeOneYear', JSON.stringify(mixtapeOneYear.slice(0,10)));
+
+    localStorage.setItem('mixtapeAllTime', JSON.stringify(playlist_track_info.slice(0,10)));
+
+}
+
+async function queueTrackObject(track){
     let accessToken = localStorage.getItem('access_token');
     const response = await fetch(`https://api.spotify.com/v1/artists/${track['track']['artists'][0]['id']}`, {
         headers: {

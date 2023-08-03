@@ -1,14 +1,21 @@
+'use client'
 import { Formik, Field, Form } from 'formik';
 import { useEffect } from 'react';
-import { getProfile } from '../_lib/get_mixtape';
+import { getUserPlaylists } from '../_lib/get_mixtape';
 import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 
 export default function MixtapeBody(){
     // UseEffect calls api every time 'values' changes
     useEffect(()=>{
-        RequestAccessToken()
-        getProfile(localStorage.getItem('access_token'))
+        RequestAccessToken();
+        getUserPlaylists();
     })
+    let mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth'));
+    let mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths'));
+    let mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear'));
+    let mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime'));
+
+
     return(
         <div className=" flex flex-col items-center space-y-4 p-6 min-h-screen">
             <Formik       
@@ -54,10 +61,46 @@ export default function MixtapeBody(){
                             All Time
                         </label>
                     </div>
-                    <div>Category: {values.category} Time: {values.time_frame}</div>
+                    {(values.time_frame =='month') &&
+                        mixtapeOneMonth.map((track:Object,index:number)=>{
+                            return(
+                                <div className='flex gap-2' key={index}>
+                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                </div>
+                            )
+                        })
+                    }
+                    {(values.time_frame =='6months') &&
+                        mixtapeSixMonths.map((track:Object,index:number)=>{
+                            return(
+                                <div className='flex gap-2' key={index}>
+                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                </div>
+                            )
+                        })
+                    }
+                    {(values.time_frame =='year') &&
+                        mixtapeOneYear.map((track:Object,index:number)=>{
+                            return(
+                                <div className='flex gap-2' key={index}>
+                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                </div>
+                            )
+                        })
+                    }
+                    {(values.time_frame =='all_time') &&
+                        mixtapeAllTime.map((track:Object,index:number)=>{
+                            return(
+                                <div className='flex gap-2' key={index}>
+                                    {values.category =='tracks'? <h1>{track.name}</h1>:<h1>{track.artist}</h1>}
+                                </div>
+                            )
+                        })
+                    }
                 </Form>
             )}
             </Formik>
+
             <h1>Nichify content</h1>    
             <button className=" btn-spotify">Share</button>
             <button className=" btn-spotify">Download Image</button>
