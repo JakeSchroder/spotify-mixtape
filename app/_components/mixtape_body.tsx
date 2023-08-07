@@ -3,6 +3,7 @@ import { Formik, Field, Form } from 'formik';
 import { useEffect, useState} from 'react';
 import { getUserPlaylists } from '../_lib/get_mixtape';
 import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
+import UserMixtape from './user_mixtape';
 
 export default function MixtapeBody(){
     const [hasMounted, setHasMounted] = useState(false);
@@ -23,12 +24,6 @@ export default function MixtapeBody(){
         mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths') || JSON.parse('[{}]'));
         mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear') || JSON.parse('[{}]'));
         mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime') || JSON.parse('[{}]'));
-    }
-
-    interface TrackProvider {
-        name:string,
-        artist:string,
-        artist_popularity: string
     }
         
     return(
@@ -76,46 +71,10 @@ export default function MixtapeBody(){
                             All Time
                         </label>
                     </div>
-                    {(values.time_frame =='month') &&
-                        mixtapeOneMonth?.map((track:TrackProvider,index:number)=>{
-                            return(
-                                <div className='flex gap-2' key={index}>
-                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
-                                    <h1>| {track?.artist_popularity} followers</h1>
-                                </div>
-                            )
-                        })
-                    }
-                    {(values.time_frame =='6months') &&
-                        mixtapeSixMonths?.map((track:TrackProvider,index:number)=>{
-                            return(
-                                <div className='flex gap-2' key={index}>
-                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
-                                    <h1>| {track?.artist_popularity} followers</h1>
-                                </div>
-                            )
-                        })
-                    }
-                    {(values.time_frame =='year') &&
-                        mixtapeOneYear?.map((track:TrackProvider,index:number)=>{
-                            return(
-                                <div className='flex gap-2' key={index}>
-                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
-                                    <h1>|   {track?.artist_popularity} followers</h1>
-                                </div>
-                            )
-                        })
-                    }
-                    {(values.time_frame =='all_time') &&
-                        mixtapeAllTime?.map((track:TrackProvider,index:number)=>{
-                            return(
-                                <div className='flex gap-2' key={index}>
-                                    {values?.category =='tracks'? <h1>{track?.name} - {track?.artist}</h1>:<h1>{track?.artist}</h1>}
-                                    <h1>| {track?.artist_popularity} followers</h1>
-                                </div>
-                            )
-                        })
-                    }
+                    {(values.time_frame =='month') && mixtapeOneMonth!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneMonth}/>}
+                    {(values.time_frame =='6months') && mixtapeSixMonths!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeSixMonths}/>}
+                    {(values.time_frame =='year') && mixtapeOneYear!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneYear}/>}
+                    {(values.time_frame =='all_time') && mixtapeAllTime!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeAllTime}/>}
                 </Form>
             )}
             </Formik>
