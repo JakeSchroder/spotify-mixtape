@@ -7,19 +7,19 @@ import UserMixtape from './user_mixtape';
 
 export default function MixtapeBody(){
     const [isLoading, setIsLoading] = useState(true)
-    const [mixtapeOneMonth, setMixtapeOneMonth] = useState({});
-    const [mixtapeSixMonths, setMixtapeSixMonths] = useState({});
-    const [mixtapeOneYear, setMixtapeOneYear] = useState({});
-    const [mixtapeAllTime, setMixtapeAllTime] = useState({});
+    const [mixtapeOneMonth, setMixtapeOneMonth] = useState([{}]);
+    const [mixtapeSixMonths, setMixtapeSixMonths] = useState([{}]);
+    const [mixtapeOneYear, setMixtapeOneYear] = useState([{}]);
+    const [mixtapeAllTime, setMixtapeAllTime] = useState([{}]);
 
     // UseEffect calls api every time 'values' changes
     useEffect(()=>{
         RequestAccessToken();
         getUserPlaylists();
-        setMixtapeOneMonth(JSON.parse(localStorage.getItem('mixtapeOneMonth')));
-        setMixtapeSixMonths(JSON.parse(localStorage.getItem('mixtapeSixMonths')));
-        setMixtapeOneYear(JSON.parse(localStorage.getItem('mixtapeOneYear')));
-        setMixtapeAllTime(JSON.parse(localStorage.getItem('mixtapeAllTime')));
+        setMixtapeOneMonth(JSON.parse(localStorage.getItem('mixtapeOneMonth')!));
+        setMixtapeSixMonths(JSON.parse(localStorage.getItem('mixtapeSixMonths')!));
+        setMixtapeOneYear(JSON.parse(localStorage.getItem('mixtapeOneYear')!));
+        setMixtapeAllTime(JSON.parse(localStorage.getItem('mixtapeAllTime')!));
         if(mixtapeOneMonth && mixtapeAllTime ){
             setIsLoading(false)            
         }
