@@ -13,12 +13,15 @@ export async function getUserPlaylists() {
         
         const data = await response.json()
         getPlaylistItems(data);
+        return true;
     }
     catch(error){
         const message = getErrorMessage(error);
         console.error(message);
         res.status(500).send({ message });
+        return false;
     }
+    
 
 }
 

@@ -6,25 +6,27 @@ import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 import UserMixtape from './user_mixtape';
 
 export default function MixtapeBody(){
-    const [hasMounted, setHasMounted] = useState(false);
-    let mixtapeOneMonth:Array<any>= JSON.parse('[{}]');
-    let mixtapeSixMonths:Array<any> = JSON.parse('[{}]');
-    let mixtapeOneYear:Array<any> = JSON.parse('[{}]');
-    let mixtapeAllTime:Array<any> = JSON.parse('[{}]');
+    const [isLoading, setIsLoading] = useState(true)
+    const [mixtapeOneMonth, setMixtapeOneMonth] = useState(JSON.parse('{}'));
+    const [mixtapeSixMonths, setMixtapeSixMonths] = useState(JSON.parse('{}'));
+    const [mixtapeOneYear, setMixtapeOneYear] = useState(JSON.parse('{}'));
+    const [mixtapeAllTime, setMixtapeAllTime] = useState(JSON.parse('{}'));
 
     // UseEffect calls api every time 'values' changes
     useEffect(()=>{
         RequestAccessToken();
         getUserPlaylists();
-        setHasMounted(true);
-
-    })
-    if (hasMounted == true){
-        mixtapeOneMonth = JSON.parse(localStorage.getItem('mixtapeOneMonth') || JSON.parse('[{}]'));
-        mixtapeSixMonths = JSON.parse(localStorage.getItem('mixtapeSixMonths') || JSON.parse('[{}]'));
-        mixtapeOneYear = JSON.parse(localStorage.getItem('mixtapeOneYear') || JSON.parse('[{}]'));
-        mixtapeAllTime = JSON.parse(localStorage.getItem('mixtapeAllTime') || JSON.parse('[{}]'));
-    }
+        setMixtapeOneMonth(JSON.parse(localStorage.getItem('mixtapeOneMonth') || JSON.parse('{}')));
+        setMixtapeSixMonths(JSON.parse(localStorage.getItem('mixtapeSixMonths') || JSON.parse('{}')));
+        setMixtapeOneYear(JSON.parse(localStorage.getItem('mixtapeOneYear') || JSON.parse('{}')));
+        setMixtapeAllTime(JSON.parse(localStorage.getItem('mixtapeAllTime') || JSON.parse('{}')));
+        if(mixtapeOneMonth !== JSON.parse('{}') && mixtapeAllTime !== JSON.parse('{}') ){
+            setIsLoading(false)            
+        }
+        else{
+            setIsLoading(true)
+        }
+    }, [])
         
     return(
         <div className=" flex flex-col items-center space-y-4 p-6 min-h-screen">
@@ -71,10 +73,11 @@ export default function MixtapeBody(){
                             All Time
                         </label>
                     </div>
-                    {(values.time_frame =='month') && mixtapeOneMonth!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneMonth}/>}
-                    {(values.time_frame =='6months') && mixtapeSixMonths!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeSixMonths}/>}
-                    {(values.time_frame =='year') && mixtapeOneYear!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneYear}/>}
-                    {(values.time_frame =='all_time') && mixtapeAllTime!== JSON.parse('[{}]') && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeAllTime}/>}
+                    {isLoading && <h1>loading...</h1>}
+                    {(values.time_frame =='month') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneMonth}/>}
+                    {(values.time_frame =='6months') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeSixMonths}/>}
+                    {(values.time_frame =='year') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneYear}/>}
+                    {(values.time_frame =='all_time') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeAllTime}/>}
                 </Form>
             )}
             </Formik>
