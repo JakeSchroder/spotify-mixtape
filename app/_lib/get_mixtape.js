@@ -4,14 +4,22 @@
 export async function getUserPlaylists() {
     let accessToken = localStorage.getItem('access_token');
     
-    const response = await fetch('https://api.spotify.com/v1/me/playlists?limit=50&offset=0', {
-        headers: {
-        Authorization: 'Bearer ' + accessToken
-        }
-    });
-    
-    const data = await response.json()
-    getPlaylistItems(data);
+    try{
+        const response = await fetch('https://api.spotify.com/v1/me/playlists?limit=50&offset=0', {
+            headers: {
+            Authorization: 'Bearer ' + accessToken
+            }
+        });
+        
+        const data = await response.json()
+        getPlaylistItems(data);
+    }
+    catch(error){
+        const message = getErrorMessage(error);
+        console.error(message);
+        res.status(500).send({ message });
+    }
+
 }
 
 async function getPlaylistItems(playlists){
@@ -19,23 +27,32 @@ async function getPlaylistItems(playlists){
     let accessToken = localStorage.getItem('access_token');
     let playlist_track_info = [];
 
-    for (let i=0; i<Object.keys(playlists['items']).length; i++){
-        playlist_tracks.push(playlists['items'][i]['tracks']['href'])
-    }
-
-    for(let i=0; i<Object.keys(playlist_tracks).length; i++){
-        const response = await fetch(playlist_tracks[i], {
-            headers: {
-            Authorization: 'Bearer ' + accessToken
-            }
-        });
-        const data = await response.json()
-        for (let i=0; i<Object.keys(data['items']).length; i++){
-            playlist_track_info.push(await queueTrackObject(data['items'][i]))
+    try{
+        for (let i=0; i<Object.keys(playlists['items']).length; i++){
+            playlist_tracks.push(playlists['items'][i]['tracks']['href'])
         }
+    
+        for(let i=0; i<Object.keys(playlist_tracks).length; i++){
+            const response = await fetch(playlist_tracks[i], {
+                headers: {
+                Authorization: 'Bearer ' + accessToken
+                }
+            });
+            const data = await response.json()
+            for (let i=0; i<Object.keys(data['items']).length; i++){
+                playlist_track_info.push(await queueTrackObject(data['items'][i]))
+            }
+        }
+    
+        createMixtape(playlist_track_info)
+
+    }
+    catch(error){
+        const message = getErrorMessage(error);
+        console.error(message);
+        res.status(500).send({ message });
     }
 
-    createMixtape(playlist_track_info)
 }
 
 async function createMixtape(playlist_track_info){
