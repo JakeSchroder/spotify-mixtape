@@ -97,4 +97,10 @@ export function RequestAccessToken(){
         .catch(error => {
             console.error('Error:', error);
         });
+
+    return new Promise((resolve, reject) => {
+        // Code of the first function
+        resolve()
+        //console.log('Retrieved Access Token into Local Storage');
+    });
 }
