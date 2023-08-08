@@ -14,13 +14,17 @@ export default function MixtapeBody(){
 
     // UseEffect calls api every time 'values' changes
     useEffect(()=>{
-        RequestAccessToken();
-        getUserPlaylists();
-        setMixtapeOneMonth(JSON.parse(localStorage.getItem('mixtapeOneMonth')!));
-        setMixtapeSixMonths(JSON.parse(localStorage.getItem('mixtapeSixMonths')!));
-        setMixtapeOneYear(JSON.parse(localStorage.getItem('mixtapeOneYear')!));
-        setMixtapeAllTime(JSON.parse(localStorage.getItem('mixtapeAllTime')!));
-        if(mixtapeOneMonth && mixtapeAllTime ){
+        const fauxArray = [{}];
+        RequestAccessToken()
+        .then(getUserPlaylists)
+        .then(()=>{
+            setMixtapeOneMonth(JSON.parse(localStorage.getItem('mixtapeOneMonth')!));
+            setMixtapeSixMonths(JSON.parse(localStorage.getItem('mixtapeSixMonths')!));
+            setMixtapeOneYear(JSON.parse(localStorage.getItem('mixtapeOneYear')!));
+            setMixtapeAllTime(JSON.parse(localStorage.getItem('mixtapeAllTime')!));
+        });
+
+        if(mixtapeOneMonth !==fauxArray && mixtapeAllTime !==fauxArray ){
             setIsLoading(false)            
         }
         else{

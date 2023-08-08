@@ -3,7 +3,6 @@
 // Fetches data about user after getting authorized
 export async function getUserPlaylists() {
     let accessToken = localStorage.getItem('access_token');
-
     
     try{
         const response = await fetch('https://api.spotify.com/v1/me/playlists?limit=50&offset=0', {
@@ -14,11 +13,14 @@ export async function getUserPlaylists() {
         
         const data = await response.json()
         getPlaylistItems(data);
-        return true;
+        return new Promise((resolve, reject) => {
+            // Code of the first function
+            resolve()
+            //console.log('Added Mixtapes to Local Storage');
+        });
     }
     catch(error){
         console.error(error);
-        res.status(500).send({ message });
     }
     
 
@@ -51,7 +53,6 @@ async function getPlaylistItems(playlists){
     }
     catch(error){
         console.error(error);
-        res.status(500).send({ message });
     }
 
 }
