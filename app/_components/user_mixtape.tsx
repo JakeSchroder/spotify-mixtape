@@ -23,7 +23,10 @@ export default function UserMixtape(props:DefaultProps){
             height={400}
             priority/>
             <h1 className=" absolute top-[45px] left-[290px] text-text">{props.user_name}</h1>
-            <h1 className=" absolute top-[75px] left-[290px] text-text">{props.time_frame.replace('_',' ')}</h1>
+            {props?.category =='tracks'? 
+                <h1 className=" absolute text-text top-[75px] left-[290px] text-left w-1/2">Your most niche tracks within the last <i>{props.time_frame.replace('_',' ')}</i></h1> 
+                : 
+                <h1 className=" absolute text-text top-[75px] left-[290px] text-left w-1/2">Your most niche artists within the last <i>{props.time_frame.replace('_',' ')}</i></h1>}
             <h1 className=" absolute top-[165px] right-[145px] text-text">{date}</h1>
             <table className=' absolute top-1/4 left-[75px] w-[500px]'>
                 <tbody>
