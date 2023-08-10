@@ -9,9 +9,11 @@ export async function getProfile() {
         Authorization: 'Bearer ' + accessToken
       }
     });
-  
     const data = await response.json();
-    localStorage.setItem('user_name', data['display_name'])
+    return new Promise((resolve, reject)=>{
+        localStorage.setItem('user_name', data['display_name'])
+        resolve()
+    })
   }
 
 export async function getUserPlaylists() {
