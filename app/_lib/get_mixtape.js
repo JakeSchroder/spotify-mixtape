@@ -1,6 +1,19 @@
 'use client'
 
 // Fetches data about user after getting authorized
+export async function getProfile() {
+    let accessToken = localStorage.getItem('access_token');
+  
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: 'Bearer ' + accessToken
+      }
+    });
+  
+    const data = await response.json();
+    localStorage.setItem('user_name', data['display_name'])
+  }
+
 export async function getUserPlaylists() {
     let accessToken = localStorage.getItem('access_token');
     
@@ -22,8 +35,6 @@ export async function getUserPlaylists() {
     catch(error){
         console.error(error);
     }
-    
-
 }
 
 async function getPlaylistItems(playlists){

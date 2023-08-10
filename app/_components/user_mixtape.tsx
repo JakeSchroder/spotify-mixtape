@@ -3,16 +3,15 @@ interface TrackProvider {
     name:string,
     artist:string,
     artist_popularity: string,
-    user_name: string,
 }
 interface DefaultProps {
     time_frame:string,
     category:string,
     mixtapeTopTracks: Array<any>,
+    user_name: string,
 }
 
 export default function UserMixtape(props:DefaultProps){
-    let user_name = 'Joe Schmo';
     const date = Date().slice(4, 15);
     return (
         <div className=' relative text-center'>
@@ -23,7 +22,7 @@ export default function UserMixtape(props:DefaultProps){
             width={600}
             height={400}
             priority/>
-            <h1 className=" absolute top-[45px] left-[290px] text-text">{user_name}</h1>
+            <h1 className=" absolute top-[45px] left-[290px] text-text">{props.user_name}</h1>
             <h1 className=" absolute top-[75px] left-[290px] text-text">{props.time_frame.replace('_',' ')}</h1>
             <h1 className=" absolute top-[165px] right-[145px] text-text">{date}</h1>
             <table className=' absolute top-1/4 left-[75px] w-[500px]'>

@@ -1,7 +1,7 @@
 'use client'
 import { Formik, Field, Form } from 'formik';
 import { useEffect, useState, useCallback, useRef} from 'react';
-import { getUserPlaylists } from '../_lib/get_mixtape';
+import { getUserPlaylists, getProfile } from '../_lib/get_mixtape';
 import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 import UserMixtape from './user_mixtape';
 import { toPng } from 'html-to-image';
@@ -12,6 +12,7 @@ export default function MixtapeBody(){
     const [mixtapeSixMonths, setMixtapeSixMonths] = useState([{}]);
     const [mixtapeOneYear, setMixtapeOneYear] = useState([{}]);
     const [mixtapeAllTime, setMixtapeAllTime] = useState([{}]);
+    const [userName, setUserName] = useState('Joe Schmo')
     const ref = useRef<HTMLDivElement>(null)
 
     const onButtonClick = useCallback(() => {
@@ -36,11 +37,13 @@ export default function MixtapeBody(){
         const fauxArray = [{}];
         RequestAccessToken()
         .then(getUserPlaylists)
+        .then(getProfile)
         .then(()=>{
             setMixtapeOneMonth(JSON.parse(localStorage.getItem('mixtapeOneMonth')!));
             setMixtapeSixMonths(JSON.parse(localStorage.getItem('mixtapeSixMonths')!));
             setMixtapeOneYear(JSON.parse(localStorage.getItem('mixtapeOneYear')!));
             setMixtapeAllTime(JSON.parse(localStorage.getItem('mixtapeAllTime')!));
+            setUserName(localStorage.getItem('user_name')!)
         });
 
         if(mixtapeOneMonth !==fauxArray && mixtapeAllTime !==fauxArray ){
@@ -98,7 +101,7 @@ export default function MixtapeBody(){
                     </div>
                         {isLoading && <h1>loading...</h1>}
                         <div ref={ref}>
-                            {(values.time_frame =='month') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneMonth}/>}
+                            {(values.time_frame =='month') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneMonth} user_name={userName}/>}
                             {(values.time_frame =='6months') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeSixMonths}/>}
                             {(values.time_frame =='year') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneYear}/>}
                             {(values.time_frame =='all_time') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeAllTime}/>}
