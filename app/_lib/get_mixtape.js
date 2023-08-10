@@ -1,6 +1,19 @@
 'use client'
 
 // Fetches data about user after getting authorized
+export async function getProfile() {
+    let accessToken = localStorage.getItem('access_token');
+  
+    const response = await fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: 'Bearer ' + accessToken
+      }
+    });
+  
+    const data = await response.json();
+    localStorage.setItem('user_name', data['display_name'])
+  }
+
 export async function getUserPlaylists() {
     let accessToken = localStorage.getItem('access_token');
     
@@ -22,8 +35,6 @@ export async function getUserPlaylists() {
     catch(error){
         console.error(error);
     }
-    
-
 }
 
 async function getPlaylistItems(playlists){
@@ -95,21 +106,13 @@ async function createMixtape(playlist_track_info){
 }
 
 async function queueTrackObject(track){
-    let accessToken = localStorage.getItem('access_token');
-    const response = await fetch(`https://api.spotify.com/v1/artists/${track['track']['artists'][0]['id']}`, {
-        headers: {
-        Authorization: 'Bearer ' + accessToken
-        }
-    });
-    const data = await response.json()
-
     let track_info = {
         name: track["track"]["name"],
         artist: track['track']['artists'][0]['name'],
         track_popularity: track['track']['popularity'],
         added_at: track['added_at'],
         added_by: track['added_by'],
-        artist_popularity: data['followers']['total'],
+        artist_popularity: track['track']['artists'][0]['followers']['total'],
     }
     return track_info
 }
