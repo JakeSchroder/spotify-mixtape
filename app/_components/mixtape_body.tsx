@@ -1,9 +1,10 @@
 'use client'
 import { Formik, Field, Form } from 'formik';
-import { useEffect, useState} from 'react';
+import { useEffect, useState, useCallback, useRef} from 'react';
 import { getUserPlaylists } from '../_lib/get_mixtape';
 import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 import UserMixtape from './user_mixtape';
+import { toPng } from 'html-to-image';
 
 export default function MixtapeBody(){
     const [isLoading, setIsLoading] = useState(true)
@@ -11,6 +12,24 @@ export default function MixtapeBody(){
     const [mixtapeSixMonths, setMixtapeSixMonths] = useState([{}]);
     const [mixtapeOneYear, setMixtapeOneYear] = useState([{}]);
     const [mixtapeAllTime, setMixtapeAllTime] = useState([{}]);
+    const ref = useRef<HTMLDivElement>(null)
+
+    const onButtonClick = useCallback(() => {
+        if (ref.current === null) {
+          return
+        }
+    
+        toPng(ref.current, { cacheBust: true, })
+          .then((dataUrl) => {
+            const link = document.createElement('a')
+            link.download = 'dosetape.png'
+            link.href = dataUrl
+            link.click()
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+    }, [ref])
 
     // UseEffect calls api every time 'values' changes
     useEffect(()=>{
@@ -77,17 +96,17 @@ export default function MixtapeBody(){
                             All Time
                         </label>
                     </div>
-                    {isLoading && <h1>loading...</h1>}
-                    {(values.time_frame =='month') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneMonth}/>}
-                    {(values.time_frame =='6months') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeSixMonths}/>}
-                    {(values.time_frame =='year') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneYear}/>}
-                    {(values.time_frame =='all_time') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeAllTime}/>}
+                        {isLoading && <h1>loading...</h1>}
+                        <div ref={ref}>
+                            {(values.time_frame =='month') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneMonth}/>}
+                            {(values.time_frame =='6months') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeSixMonths}/>}
+                            {(values.time_frame =='year') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeOneYear}/>}
+                            {(values.time_frame =='all_time') && !isLoading && <UserMixtape time_frame={values.time_frame} category={values.category} mixtapeTopTracks={mixtapeAllTime}/>}
+                        </div>
                 </Form>
             )}
             </Formik>
-            <button className=" btn-spotify">Share</button>
-            <button className=" btn-spotify">Download Image</button>
-            <button className=" btn-spotify">Log Out</button>
+            <button className=" btn-spotify" onClick={onButtonClick}>Download Image</button>
         </div>
     )
 }
