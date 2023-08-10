@@ -114,7 +114,6 @@ async function queueTrackObject(track){
         track_popularity: track['track']['popularity'],
         added_at: track['added_at'],
         added_by: track['added_by'],
-        artist_popularity: track['track']['artists'][0]['followers']['total'],
     }
     return track_info
 }
