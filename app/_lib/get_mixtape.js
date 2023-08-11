@@ -25,6 +25,9 @@ export async function getUserPlaylists() {
             Authorization: 'Bearer ' + accessToken
             }
         });
+        if (!response.ok) {
+            throw new Error("getUserPlaylists: " + response.status);
+        }
         
         const data = await response.json()
         getPlaylistItems(data);
@@ -38,10 +41,29 @@ export async function getUserPlaylists() {
         console.error(error);
     }
 }
+async function getTracks(playlist_track, playlist_track_info){
+    let accessToken = localStorage.getItem('access_token');
+
+    const response = await fetch(playlist_track, {
+        headers: {
+            Authorization: 'Bearer ' + accessToken
+        }
+    });
+    if (!response.ok) {
+        throw new Error("getPlaylistTracks: " + response.status);
+    }
+    const data = await response.json()
+    for (let i=0; i<Object.keys(data['items']).length; i++){
+        playlist_track_info.push(queueTrackObject(data['items'][i]))
+    }
+    return new Promise((resolve, reject) => {
+        resolve()
+    });
+}
 
 async function getPlaylistItems(playlists){
     let playlist_tracks = [];
-    let accessToken = localStorage.getItem('access_token');
+    let promises = [];
     let playlist_track_info = [];
 
     try{
@@ -50,24 +72,15 @@ async function getPlaylistItems(playlists){
         }
     
         for(let i=0; i<Object.keys(playlist_tracks).length; i++){
-            const response = await fetch(playlist_tracks[i], {
-                headers: {
-                Authorization: 'Bearer ' + accessToken
-                }
-            });
-            const data = await response.json()
-            for (let i=0; i<Object.keys(data['items']).length; i++){
-                playlist_track_info.push(await queueTrackObject(data['items'][i]))
-            }
+            promises.push(getTracks(playlist_tracks[i], playlist_track_info))
         }
-    
-        createMixtape(playlist_track_info)
-
     }
     catch(error){
         console.error(error);
     }
-
+    await Promise.all(promises)
+    await Promise.all(playlist_track_info)
+    .then(result=>createMixtape(result))
 }
 
 async function createMixtape(playlist_track_info){
