@@ -36,7 +36,7 @@ export default function UserMixtape(props:DefaultProps){
                             <tr className='flex gap-8 w-max py-1 ' key={index}>
                                 <td className=" text-text text-start">{String(index+1).padStart(2, '0')}</td>
                                 {props?.category =='tracks'? <td className=" text-text w-[300px] text-start">{track?.name} - {track?.artist}</td> : <td className=" text-text w-[300px] text-start">{track?.artist}</td>}
-                                <td className=" text-text text-right">{track.track_popularity} - ranking</td>
+                                <td className=" text-text text-right">{100-Number(track.track_popularity)} - ranking</td>
                             </tr>
                         )
                     })}
