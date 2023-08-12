@@ -63,7 +63,7 @@ export default function SpotifyLogin(){
         });
 }
 
-export function RequestAccessToken(){
+export async function RequestAccessToken(){
     const urlParams = new URLSearchParams(window.location.search);
     let code = urlParams.get('code');
 
@@ -92,15 +92,26 @@ export function RequestAccessToken(){
             return response.json();
         })
         .then(data => {
-            localStorage.setItem('access_token', data.access_token);
+            //localStorage.setItem('access_token', data.access_token);
+            const asyncLocalStorage = {
+                setItem(key, value) {
+                    return Promise.resolve().then(()=> {
+                        localStorage.setItem(key, value);
+                    });
+                },
+                getItem(key) {
+                    return Promise.resolve().then(()=> {
+                        return localStorage.getItem(key);
+                    });
+                }
+            };
+            asyncLocalStorage.setItem('access_token', data.access_token).then(()=> {
+                return asyncLocalStorage.getItem('access_token');
+            })
         })
         .catch(error => {
             console.error('Error:', error);
         });
 
-    return new Promise((resolve, reject) => {
-        // Code of the first function
-        resolve()
-        //console.log('Retrieved Access Token into Local Storage');
-    });
+    return await response
 }
