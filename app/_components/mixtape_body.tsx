@@ -1,7 +1,7 @@
 'use client'
 import { Formik, Field, Form } from 'formik';
 import { useEffect, useState, useCallback, useRef} from 'react';
-import { getUserPlaylists, getProfile } from '../_lib/get_mixtape';
+import { getUserPlaylists, getProfile, mainMixtape } from '../_lib/get_mixtape';
 import { RequestAccessToken } from "../_lib/pkce_spotify_auth";
 import UserMixtape from './user_mixtape';
 import { toPng } from 'html-to-image';
@@ -36,8 +36,8 @@ export default function MixtapeBody(){
     useEffect(()=>{
         const fauxArray = [{}];
         RequestAccessToken()
-        .then(getUserPlaylists)
         .then(getProfile)
+        .then(mainMixtape)
         .then(()=>{
             setMixtapeOneMonth(JSON.parse(localStorage.getItem('mixtapeOneMonth')!));
             setMixtapeSixMonths(JSON.parse(localStorage.getItem('mixtapeSixMonths')!));
@@ -46,7 +46,7 @@ export default function MixtapeBody(){
             setUserName(localStorage.getItem('user_name')!)
         });
 
-        if(mixtapeOneMonth !==fauxArray && mixtapeAllTime !==fauxArray ){
+        if(mixtapeOneMonth.length >0){
             setIsLoading(false)            
         }
         else{
