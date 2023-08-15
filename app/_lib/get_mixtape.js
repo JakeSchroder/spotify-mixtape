@@ -16,6 +16,14 @@ export async function getProfile() {
     })
   }
 
+export async function mainMixtape(){
+    const response = getUserPlaylists()
+    .then((data) => getPlaylistItems(data))
+    .then(createMixtape)
+
+    return await response
+}
+
 export async function getUserPlaylists() {
     let accessToken = localStorage.getItem('access_token');
     
@@ -30,35 +38,13 @@ export async function getUserPlaylists() {
         }
         
         const data = await response.json()
-        getPlaylistItems(data);
         return new Promise((resolve, reject) => {
-            // Code of the first function
-            resolve()
-            //console.log('Added Mixtapes to Local Storage');
+            resolve(data)
         });
     }
     catch(error){
         console.error(error);
     }
-}
-async function getTracks(playlist_track, playlist_track_info){
-    let accessToken = localStorage.getItem('access_token');
-
-    const response = await fetch(playlist_track, {
-        headers: {
-            Authorization: 'Bearer ' + accessToken
-        }
-    });
-    if (!response.ok) {
-        throw new Error("getPlaylistTracks: " + response.status);
-    }
-    const data = await response.json()
-    for (let i=0; i<Object.keys(data['items']).length; i++){
-        playlist_track_info.push(queueTrackObject(data['items'][i]))
-    }
-    return new Promise((resolve, reject) => {
-        resolve()
-    });
 }
 
 async function getPlaylistItems(playlists){
@@ -79,45 +65,35 @@ async function getPlaylistItems(playlists){
         console.error(error);
     }
     await Promise.all(promises)
-    await Promise.all(playlist_track_info)
-    .then(result=>createMixtape(result))
+    return new Promise((resolve, reject) => {
+        resolve(Promise.all(playlist_track_info))
+    });
 }
 
-async function createMixtape(playlist_track_info){
-    const currentDate = new Date();
-    const oneMonthAgo = new Date(currentDate);
-    oneMonthAgo.setMonth(currentDate.getMonth() - 1);
-    const sixMonthsAgo = new Date(currentDate);
-    sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
-    const oneYearAgo = new Date(currentDate);
-    oneYearAgo.setMonth(currentDate.getMonth() - 12);
+async function getTracks(playlist_track, playlist_track_info){
+    let accessToken = localStorage.getItem('access_token');
 
-    playlist_track_info.sort((a, b)=> a.track_popularity - b.track_popularity)
-    let mixtapeOneMonth = playlist_track_info.filter((a)=> {
-        const givenDate = new Date(a.added_at);
-        if (givenDate > oneMonthAgo) {
-            return true;
+    try{
+        const response = await fetch(playlist_track, {
+            headers: {
+                Authorization: 'Bearer ' + accessToken
+            }
+        });
+        if (!response.ok) {
+            throw new Error("getPlaylistTracks: " + response.status);
         }
-    })
-    localStorage.setItem('mixtapeOneMonth', JSON.stringify(mixtapeOneMonth.slice(0,10)));
-
-    let mixtapeSixMonths = playlist_track_info.filter((a)=> {
-        const givenDate = new Date(a.added_at);
-        if (givenDate > sixMonthsAgo) {
-            return true;
+        const data = await response.json()
+        for (let i=0; i<Object.keys(data['items']).length; i++){
+            playlist_track_info.push(queueTrackObject(data['items'][i]))
         }
-    })
-    localStorage.setItem('mixtapeSixMonths', JSON.stringify(mixtapeSixMonths.slice(0,10)));
-    let mixtapeOneYear = playlist_track_info.filter((a)=> {
-        const givenDate = new Date(a.added_at);
-        if (givenDate > oneYearAgo) {
-            return true;
-        }
-    })
-    localStorage.setItem('mixtapeOneYear', JSON.stringify(mixtapeOneYear.slice(0,10)));
+    }
+    catch(error){
+        console.error(error);
+    }
 
-    localStorage.setItem('mixtapeAllTime', JSON.stringify(playlist_track_info.slice(0,10)));
-
+    return new Promise((resolve, reject) => {
+        resolve()
+    });
 }
 
 async function queueTrackObject(track){
@@ -129,4 +105,63 @@ async function queueTrackObject(track){
         added_by: track['added_by'],
     }
     return track_info
+}
+
+async function createMixtape(playlist_track_info){
+    const currentDate = new Date();
+    const oneMonthAgo = new Date(currentDate);
+    const sixMonthsAgo = new Date(currentDate);
+    const oneYearAgo = new Date(currentDate);
+    oneMonthAgo.setMonth(currentDate.getMonth() - 1);
+    sixMonthsAgo.setMonth(currentDate.getMonth() - 6);
+    oneYearAgo.setMonth(currentDate.getMonth() - 12);
+    const asyncLocalStorage = {
+        setItem(key, value) {
+            return Promise.resolve().then(()=> {
+                localStorage.setItem(key, value);
+            });
+        },
+        getItem(key) {
+            return Promise.resolve().then(()=> {
+                return localStorage.getItem(key);
+            });
+        }
+    };
+
+
+    playlist_track_info.sort((a, b)=> a.track_popularity - b.track_popularity)
+    let mixtapeOneMonth = playlist_track_info.filter((a)=> {
+        const givenDate = new Date(a.added_at);
+        if (givenDate > oneMonthAgo) {
+            return true;
+        }
+    })
+
+    let mixtapeSixMonths = playlist_track_info.filter((a)=> {
+        const givenDate = new Date(a.added_at);
+        if (givenDate > sixMonthsAgo) {
+            return true;
+        }
+    })
+
+    let mixtapeOneYear = playlist_track_info.filter((a)=> {
+        const givenDate = new Date(a.added_at);
+        if (givenDate > oneYearAgo) {
+            return true;
+        }
+    })
+    const response = asyncLocalStorage.setItem('mixtapeOneMonth', JSON.stringify(mixtapeOneMonth.slice(0,10))).then(()=> {
+        return asyncLocalStorage.getItem('mixtapeOneMonth');
+    }).then(
+    asyncLocalStorage.setItem('mixtapeSixMonths', JSON.stringify(mixtapeSixMonths.slice(0,10))).then(()=> {
+        return asyncLocalStorage.getItem('mixtapeSixMonths');
+    })).then(
+    asyncLocalStorage.setItem('mixtapeOneYear', JSON.stringify(mixtapeOneYear.slice(0,10))).then(()=> {
+        return asyncLocalStorage.getItem('mixtapeOneYear');
+    })).then(
+    asyncLocalStorage.setItem('mixtapeAllTime', JSON.stringify(playlist_track_info.slice(0,10))).then(()=> {
+        return asyncLocalStorage.getItem('mixtapeAllTime');
+    }))
+
+    return await response
 }
