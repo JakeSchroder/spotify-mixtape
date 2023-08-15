@@ -162,7 +162,6 @@ async function createMixtape(playlist_track_info){
     asyncLocalStorage.setItem('mixtapeAllTime', JSON.stringify(playlist_track_info.slice(0,10))).then(()=> {
         return asyncLocalStorage.getItem('mixtapeAllTime');
     }))
-    console.log(response)
 
     return await response
 }
