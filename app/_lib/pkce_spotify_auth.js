@@ -45,7 +45,7 @@ export default function SpotifyLogin(){
         
         generateCodeChallenge(codeVerifier).then(codeChallenge => {
             let state = generateRandomString(16);
-            let scope = 'user-read-private user-read-email';
+            let scope = 'playlist-read-private user-library-read';
             
             localStorage.setItem('code_verifier', codeVerifier);
             
